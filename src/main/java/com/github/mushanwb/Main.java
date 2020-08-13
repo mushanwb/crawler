@@ -9,7 +9,6 @@ import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class Main {
         }
 
         HttpGet httpGet = new HttpGet(link);
-        httpGet.addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
+        httpGet.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try (CloseableHttpResponse response1 = httpclient.execute(httpGet)) {
