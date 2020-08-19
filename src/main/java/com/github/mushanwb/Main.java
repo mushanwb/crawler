@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -45,7 +46,7 @@ public class Main {
                 parseUrlsFromPageAndStoreIntoDatabase(connection, doc);
 
                 // 分析文档，如果时新闻，则插入到数据库中（有标题的则为新闻）
-                storeIntoDatabaseIfItIsNewsPage(doc);
+                storeIntoDatabaseIfItIsNewsPage(connection, doc, link);
 
                 // 处理完的链接加入到已处理的数据库中
                 updateDatabase(connection, link, "INSERT INTO LINKS_ALREADY_PROCESSED (link) VALUES (?)");
@@ -108,11 +109,18 @@ public class Main {
         return link;
     }
 
-    private static void storeIntoDatabaseIfItIsNewsPage(Document doc) {
+    private static void storeIntoDatabaseIfItIsNewsPage(Connection connection, Document doc, String link) throws SQLException {
         ArrayList<Element> articleTags = doc.select("article");
         if (!articleTags.isEmpty()) {
             for (Element articleTag:articleTags) {
-                System.out.println(articleTag.select(".art_tit_h1").text());
+                String title = articleTag.select(".art_tit_h1").text();
+                String content = articleTag.select("p").stream().map(Element::text).collect(Collectors.joining("\n"));
+                try (PreparedStatement statement = connection.prepareStatement("INSERT INTO NEWS (TITLE, CONTENT, URL, CREATED_AT, MODIFIED_AT) values ( ?, ?, ?, now(), now() ) ")) {
+                    statement.setString(1, title);
+                    statement.setString(2, content);
+                    statement.setString(3, link);
+                    statement.executeUpdate();
+                }
             }
         }
     }
@@ -127,7 +135,6 @@ public class Main {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try (CloseableHttpResponse response1 = httpclient.execute(httpGet)) {
-            System.out.println(response1.getStatusLine());
             HttpEntity entity1 = response1.getEntity();
             String html = EntityUtils.toString(entity1);
             return Jsoup.parse(html);
