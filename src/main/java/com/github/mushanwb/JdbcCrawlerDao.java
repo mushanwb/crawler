@@ -5,14 +5,14 @@ import java.io.File;
 import java.sql.*;
 
 
-public class DatabaseAccessObject {
+public class JdbcCrawlerDao implements CrawlerDao {
 
     private static final String DATABASE_USER_NAME = "root";
     private static final String DATABASE_USER_PASSWORD = "root123";
     private final Connection connection;
 
     @SuppressFBWarnings("DMI_CONSTANT_DB_PASSWORD")
-    public DatabaseAccessObject() {
+    public JdbcCrawlerDao() {
         File projectDir = new File(System.getProperty("basedir", System.getProperty("user.dir")));
         String jdbcUrl = "jdbc:h2:file:" + new File(projectDir, "news").getAbsolutePath();
         try {

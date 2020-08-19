@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class Crawler {
 
-    DatabaseAccessObject dao = new DatabaseAccessObject();
+    private CrawlerDao dao = new JdbcCrawlerDao();
 
     public static void main(String[] args) throws IOException, SQLException {
         new Crawler().run();
