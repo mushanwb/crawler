@@ -6,7 +6,29 @@
     <select id="selectNextAvailableLink" resultType="String">
         SELECT LINK FROM LINKS_TO_BE_PROCESSED LIMIT 1
     </select>
+
     <delete id="deleteLink" parameterType="String">
         DELETE FROM LINKS_TO_BE_PROCESSED WHERE LINK = #{LINK}
     </delete>
+
+    <insert id="insertNews" parameterType="com.github.mushanwb.News">
+        INSERT INTO NEWS (TITLE, CONTENT, URL, CREATED_AT, MODIFIED_AT) values ( #{title}, #{content}, #{url}, now(), now() )
+    </insert>
+
+    <select id="countLink" parameterType="String" resultType="int">
+        SELECT count(*) FROM LINKS_ALREADY_PROCESSED WHERE LINK = #{LINK}
+    </select>
+
+    <insert id="insertLink" parameterType="HashMap">
+        INSERT INTO
+        <choose>
+            <when test="tableName == 'links_to_be_processed'">
+                links_to_be_processed
+            </when>
+            <otherwise>
+                links_already_processed
+            </otherwise>
+        </choose>
+        ( LINK ) values ( #{link} )
+    </insert>
 </mapper>
