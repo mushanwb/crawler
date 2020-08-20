@@ -6,7 +6,7 @@
     <select id="selectNextAvailableLink" resultType="String">
         SELECT LINK FROM LINKS_TO_BE_PROCESSED LIMIT 1
     </select>
-    <delete id="deleteLinl" parameterType="String">
+    <delete id="deleteLink" parameterType="String">
         DELETE FROM LINKS_TO_BE_PROCESSED WHERE LINK = #{LINK}
     </delete>
 </mapper>

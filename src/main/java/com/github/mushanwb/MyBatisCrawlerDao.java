@@ -28,11 +28,6 @@ public class MyBatisCrawlerDao implements CrawlerDao {
     }
 
     @Override
-    public void updateDatabase(String href, String sql) throws SQLException {
-
-    }
-
-    @Override
     public String getNextLinkThenDelete() throws SQLException {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             String link = session.selectOne("com.github.mushanwb.MyMapper.selectNextAvailableLink");
@@ -45,6 +40,16 @@ public class MyBatisCrawlerDao implements CrawlerDao {
 
     @Override
     public void insertNewsIntoDatabase(String title, String content, String link) throws SQLException {
+        
+    }
+
+    @Override
+    public void insertProcessedLink(String link) throws SQLException {
+
+    }
+
+    @Override
+    public void insertLinkToBeProcessed(String href) throws SQLException {
 
     }
 }
