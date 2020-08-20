@@ -43,6 +43,7 @@
             <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -63,6 +64,14 @@
             <artifactId>annotations</artifactId>
             <version>3.0.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.5</version>
+        </dependency>
+
 
 
     </dependencies>

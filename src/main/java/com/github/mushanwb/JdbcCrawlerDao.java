@@ -1,7 +1,6 @@
 package com.github.mushanwb;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import java.io.File;
 import java.sql.*;
 
 
@@ -13,8 +12,7 @@ public class JdbcCrawlerDao implements CrawlerDao {
 
     @SuppressFBWarnings("DMI_CONSTANT_DB_PASSWORD")
     public JdbcCrawlerDao() {
-        File projectDir = new File(System.getProperty("basedir", System.getProperty("user.dir")));
-        String jdbcUrl = "jdbc:h2:file:" + new File(projectDir, "news").getAbsolutePath();
+        String jdbcUrl = "jdbc:h2:file:D:\\wb\\my\\fork\\crawler\\news";
         try {
             this.connection = DriverManager.getConnection(jdbcUrl, DATABASE_USER_NAME, DATABASE_USER_PASSWORD);
         } catch (SQLException e) {
@@ -46,7 +44,7 @@ public class JdbcCrawlerDao implements CrawlerDao {
         }
     }
 
-    public String getNextLink(String sql) throws SQLException {
+    private String getNextLink(String sql) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 return resultSet.getNString("LINK");
