@@ -46,8 +46,7 @@ public class Crawler {
                 storeIntoDatabaseIfItIsNewsPage(doc, link);
 
                 // 处理完的链接加入到已处理的数据库中
-                dao.updateDatabase(link, "INSERT INTO LINKS_ALREADY_PROCESSED (link) VALUES (?)");
-
+                dao.insertProcessedLink(link);
             }
         }
     }
@@ -58,10 +57,9 @@ public class Crawler {
             String href = aTag.attr("href");
             if (isNesPage(href)) {
                 // 将爬取的链接放入即将处理的数据中
-                dao.updateDatabase(href, "INSERT INTO LINKS_TO_BE_PROCESSED (link) VALUES (?)");
+                dao.insertLinkToBeProcessed(href);
             }
         }
-        //doc.select("a").stream().map(aTag -> aTag.attr("href")).forEach(linkPool::add);
     }
 
     private void storeIntoDatabaseIfItIsNewsPage(Document doc, String link) throws SQLException {
