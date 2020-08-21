@@ -4,19 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.mushanwb.MyMapper">
     <select id="selectNextAvailableLink" resultType="String">
-        SELECT LINK FROM LINKS_TO_BE_PROCESSED LIMIT 1
+        SELECT link FROM links_to_be_processed LIMIT 1
     </select>
 
     <delete id="deleteLink" parameterType="String">
-        DELETE FROM LINKS_TO_BE_PROCESSED WHERE LINK = #{LINK}
+        DELETE FROM links_to_be_processed WHERE link = #{link}
     </delete>
 
     <insert id="insertNews" parameterType="com.github.mushanwb.News">
-        INSERT INTO NEWS (TITLE, CONTENT, URL, CREATED_AT, MODIFIED_AT) values ( #{title}, #{content}, #{url}, now(), now() )
+        INSERT INTO news (title, content, url, created_at, updated_at) values ( #{title}, #{content}, #{url}, now(), now() )
     </insert>
 
     <select id="countLink" parameterType="String" resultType="int">
-        SELECT count(*) FROM LINKS_ALREADY_PROCESSED WHERE LINK = #{LINK}
+        SELECT count(*) FROM links_already_processed WHERE link = #{link}
     </select>
 
     <insert id="insertLink" parameterType="HashMap">
@@ -29,6 +29,6 @@
                 links_already_processed
             </otherwise>
         </choose>
-        ( LINK ) values ( #{link} )
+        ( link ) values ( #{link} )
     </insert>
 </mapper>

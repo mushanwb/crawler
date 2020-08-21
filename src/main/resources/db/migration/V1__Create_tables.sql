@@ -1,16 +1,16 @@
-create table NEWS(
+create table news(
     id bigint primary key auto_increment,
     title text,
     content text,
     url varchar(2000),
-    created_at timestamp,
-    modified_at timestamp
+    created_at timestamp default now(),
+    updated_at timestamp default now()
 );
 
-create table LINKS_ALREADY_PROCESSED(
+create table links_already_processed(
     link varchar(2000)
 );
 
-create table LINKS_TO_BE_PROCESSED(
+create table links_to_be_processed(
     link varchar(2000)
 );

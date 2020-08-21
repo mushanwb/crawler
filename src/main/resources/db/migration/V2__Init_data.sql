@@ -1,1 +1,1 @@
-insert into LINKS_TO_BE_PROCESSED ( LINK ) VALUES ( 'https://sina.cn' )
+insert into links_to_be_processed ( link ) VALUES ( 'https://sina.cn' )
