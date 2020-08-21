@@ -15,40 +15,46 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
-public class Crawler {
+public class Crawler extends Thread {
 
-    private CrawlerDao dao = new JdbcCrawlerDao();
+    private CrawlerDao dao;
 
-    public static void main(String[] args) throws IOException, SQLException {
-        new Crawler().run();
+    public Crawler(CrawlerDao dao) {
+        this.dao = dao;
     }
 
-    public void run() throws IOException, SQLException {
+    @Override
+    public void run() {
 
-        String link;
-        // 从数据库中取出要被解析的链接并且删除，如果取出的为null，则表示没有要解析的链接
-        while ((link = dao.getNextLinkThenDelete()) != null) {
+        try {
+            String link;
+            // 从数据库中取出要被解析的链接并且删除，如果取出的为null，则表示没有要解析的链接
+            while ((link = dao.getNextLinkThenDelete()) != null) {
 
-            // 链接已经被解析过了
-            if (dao.isLinkProcessed(link)) {
-                continue;
+                // 链接已经被解析过了
+                if (dao.isLinkProcessed(link)) {
+                    continue;
+                }
+
+                // 如果链接时有效链接，则进行解析，有效链接即为分析得出来得链接规则
+                if (isInterestingLink(link)) {
+                    // 获取链接的 html 文档
+                    Document doc = httpGetAndParseHtml(link);
+
+                    // 分析 html 文档并且从中获取新的新闻链接放入到即将处理链接的数据库中
+                    parseUrlsFromPageAndStoreIntoDatabase(doc);
+
+                    // 分析文档，如果时新闻，则插入到数据库中（有标题的则为新闻）
+                    storeIntoDatabaseIfItIsNewsPage(doc, link);
+
+                    // 处理完的链接加入到已处理的数据库中
+                    dao.insertProcessedLink(link);
+                }
             }
-
-            // 如果链接时有效链接，则进行解析，有效链接即为分析得出来得链接规则
-            if (isInterestingLink(link)) {
-                // 获取链接的 html 文档
-                Document doc = httpGetAndParseHtml(link);
-
-                // 分析 html 文档并且从中获取新的新闻链接放入到即将处理链接的数据库中
-                parseUrlsFromPageAndStoreIntoDatabase(doc);
-
-                // 分析文档，如果时新闻，则插入到数据库中（有标题的则为新闻）
-                storeIntoDatabaseIfItIsNewsPage(doc, link);
-
-                // 处理完的链接加入到已处理的数据库中
-                dao.insertProcessedLink(link);
-            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     private void parseUrlsFromPageAndStoreIntoDatabase(Document doc) throws SQLException {

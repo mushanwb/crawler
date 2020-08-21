@@ -33,7 +33,7 @@ public class MyBatisCrawlerDao implements CrawlerDao {
     }
 
     @Override
-    public String getNextLinkThenDelete() throws SQLException {
+    public synchronized String getNextLinkThenDelete() throws SQLException {
         // openSession(true) 每次执行完自动提交,如果不设置 true ,默认为开启事务
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
             String link = session.selectOne("com.github.mushanwb.MyMapper.selectNextAvailableLink");
