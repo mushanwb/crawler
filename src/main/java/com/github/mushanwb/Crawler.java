@@ -100,7 +100,11 @@ public class Crawler extends Thread {
     }
 
     private static boolean isNesPage(String link) {
-        return link.contains("https://news.sina.cn/") || link.contains("http://news.sina.cn/");
+        return link.contains("https://news.sina.cn/") || link.contains("http://news.sina.cn/")
+                || link.contains("https://sports.sina.cn/") || link.contains("https://ent.sina.cn/")
+                || link.contains("https://mil.sina.cn/") || link.contains("https://tech.sina.cn/")
+                || link.contains("https://nba.sina.cn/") || link.contains("https://ast.sina.cn/")
+                || link.contains("https://edu.sina.cn/");
     }
 
     private static boolean isIndexPage(String link) {
