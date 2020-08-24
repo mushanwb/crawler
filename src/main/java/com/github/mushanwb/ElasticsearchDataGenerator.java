@@ -46,6 +46,8 @@ public class ElasticsearchDataGenerator {
             for (int i = 0; i < 10; i++) {
                 BulkRequest bulkRequest = new BulkRequest();
                 for (News news:newsFromMySql) {
+                    // 如果 es 版本在7之后,则 type 不需要,我 es 服务器版本是5.6, maven 版本是 7.9
+                    // 因此在这里使用 type 会显示被废弃的标识,但如果不加 type, 插入数据到 5.6 版本中会报错
                     IndexRequest request = new IndexRequest("news").type("news");
 
                     Map<String,Object> data = new HashMap<>();

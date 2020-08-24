@@ -1,6 +1,22 @@
 # crawler
 java 爬虫和 Elasticsearch 数据简单分析
 
+#### 第三方包:
+
++ httpclient: 发送 http 请求
+
++ jsoup: HTML 解析器
+
++ h2database: h2 数据库
+
++ findbugs: 静态代码分析
+
++ mybatis: ORM,对象关系映射
+
++ mysql: mysql 数据库
+
++ rest-high: elasticsearch 搜索
+
 #### 插件:
 
 + maven-checkstyle-plugin: 自动化代码编写规范检查
