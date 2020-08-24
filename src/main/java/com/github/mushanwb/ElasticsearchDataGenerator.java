@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -50,12 +49,12 @@ public class ElasticsearchDataGenerator {
                     // 因此在这里使用 type 会显示被废弃的标识,但如果不加 type, 插入数据到 5.6 版本中会报错
                     IndexRequest request = new IndexRequest("news").type("news");
 
-                    Map<String,Object> data = new HashMap<>();
-                    data.put("content",news.getContent());
-                    data.put("url",news.getUrl());
-                    data.put("title",news.getTitle());
-                    data.put("createdAt",news.getCreatedAt());
-                    data.put("updatedAt",news.getUpdatedAt());
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("content", news.getContent());
+                    data.put("url", news.getUrl());
+                    data.put("title", news.getTitle());
+                    data.put("createdAt", news.getCreatedAt());
+                    data.put("updatedAt", news.getUpdatedAt());
                     request.source(data, XContentType.JSON);
 
                     // 使用块插入
@@ -70,7 +69,7 @@ public class ElasticsearchDataGenerator {
                 System.out.println(bulkResponse.status().getStatus());
 
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
